@@ -1,15 +1,16 @@
-import '../AllExport/Export.dart';
+import 'package:campus_campanion/Components/DrawerWidget.dart';
+
+import '../AllExports/Export.dart';
 
 class ChatScreen extends StatelessWidget {
   final ChatController chatController = Get.put(ChatController());
 
   @override
   Widget build(BuildContext context) {
+    // final Size size = MediaQuery.of(context).size;
     return Obx(
       () => Scaffold(
-        drawer: Drawer(
-          child: Drawer(),
-        ),
+        drawer: Drawer(child: Drawer(child: MyDrawerWidget())),
         appBar: AppBar(
           title: Text(
             "Campus Campanion",
@@ -18,18 +19,6 @@ class ChatScreen extends StatelessWidget {
             ),
           ),
           centerTitle: true,
-          actions: [
-            IconButton(
-              icon: Icon(
-                  chatController.isDarkMode
-                      ? Icons.light_mode
-                      : Icons.dark_mode,
-                  color: chatController.isDarkMode
-                      ? Color(0xffffa9a06)
-                      : Color(0xfff0d5f98)),
-              onPressed: chatController.toggleTheme,
-            ),
-          ],
         ),
         body: Column(
           children: [
@@ -37,7 +26,7 @@ class ChatScreen extends StatelessWidget {
               child: Obx(
                 () => chatController.messages.isEmpty
                     ? Text(
-                        "Disclamer: \nCampus Campinion can answer's only \nabout University related question's",
+                        "Disclaimer: \nCampus Campinion can answer's only \nabout University related question's",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                         ),
@@ -78,8 +67,8 @@ class ChatScreen extends StatelessWidget {
                                     maxLines: null,
                                     style: TextStyle(
                                         color: chatController.isDarkMode
-                                              ? Colors.black
-                                              : Colors.white,
+                                            ? Colors.black
+                                            : Colors.white,
                                         fontSize: 10,
                                         fontWeight: FontWeight.bold),
                                   ),
