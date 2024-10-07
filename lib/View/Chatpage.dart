@@ -1,5 +1,4 @@
 import 'package:campus_campanion/Components/DrawerWidget.dart';
-
 import '../AllExports/Export.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -7,14 +6,18 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final Size size = MediaQuery.of(context).size;
     return Obx(
       () => Scaffold(
         drawer: Drawer(child: Drawer(child: MyDrawerWidget())),
         appBar: AppBar(
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.white),
+          backgroundColor:
+              chatController.isDarkMode ? Colors.black12 : Color(0xff800000),
           title: Text(
             "Campus Campanion",
             style: TextStyle(
+              color: Colors.white,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -50,7 +53,7 @@ class ChatScreen extends StatelessWidget {
                               decoration: BoxDecoration(
                                 color: message.isBot
                                     ? Colors.grey[400]
-                                    : Color(0xfffd22a50),
+                                    : Color(0xfff800000),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Column(
@@ -58,17 +61,15 @@ class ChatScreen extends StatelessWidget {
                                 children: [
                                   Text(message.content,
                                       style: TextStyle(
-                                          color: chatController.isDarkMode
-                                              ? Colors.black
-                                              : Colors.white,
+                                          color: message.isBot
+                                              ?chatController.isDarkMode ? Colors.black : Colors.black : Colors.white,
                                           fontWeight: FontWeight.bold)),
                                   Text(
                                     message.formattedTimestamp,
                                     maxLines: null,
                                     style: TextStyle(
-                                        color: chatController.isDarkMode
-                                            ? Colors.black
-                                            : Colors.white,
+                                        color: message.isBot
+                                              ?chatController.isDarkMode ? Colors.black : Colors.black : Colors.white,
                                         fontSize: 10,
                                         fontWeight: FontWeight.bold),
                                   ),
@@ -101,7 +102,7 @@ class ChatScreen extends StatelessWidget {
                       minLines: null,
                       cursorColor: chatController.isDarkMode
                           ? Colors.white
-                          : Color(0xfffd22a50),
+                          : Color(0xfff800000),
                       textDirection: TextDirection.ltr,
                       controller: chatController.messageController,
                       decoration: InputDecoration(
@@ -119,7 +120,7 @@ class ChatScreen extends StatelessWidget {
                               borderSide: BorderSide(
                                   color: chatController.isDarkMode
                                       ? Colors.white
-                                      : Color(0xfffd22a50),
+                                      : Color(0xfff800000),
                                   width: 3))),
                       style: TextStyle(
                           color: chatController.isDarkMode
@@ -133,7 +134,7 @@ class ChatScreen extends StatelessWidget {
                       icon: Icon(Icons.send),
                       color: chatController.isDarkMode
                           ? Colors.white
-                          : Color(0xfffd22a50),
+                          : Color(0xfff800000),
                       onPressed: () {
                         chatController
                             .sendMessage(chatController.messageController.text);

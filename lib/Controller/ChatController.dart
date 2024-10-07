@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:intl/intl.dart';
 import '../AllExports/Export.dart';
+import 'package:http/http.dart' as http;
 
 class ChatController extends GetxController {
   var messages = <MessageModel>[].obs;
@@ -31,17 +34,44 @@ class ChatController extends GetxController {
           content: content, isBot: false, timestamp: DateTime.now()));
       messageController.clear();
       scrollToBottom();
-      botReply();
+      botReply(content);
     }
   }
 
-  Future<void> botReply() async {
+   Future<void> botReply(String userMessage) async {
     isBotTyping.value = true;
-    await Future.delayed(Duration(seconds: 2));
-    messages.add(MessageModel(
-        content: "Bot's response", isBot: true, timestamp: DateTime.now()));
+    
+    try {
+      final response = await http.post(
+        Uri.parse('http://192.168.0.105:5000/chat'), 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'message': userMessage,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body); 
+
+        String botResponse = data['response'];
+
+        messages.add(MessageModel(
+            content: botResponse, isBot: true, timestamp: DateTime.now()));
+      } else {
+        messages.add(MessageModel(
+            content: "Error: Unable to get bot response", 
+            isBot: true, 
+            timestamp: DateTime.now()));
+      }
+    } catch (e) {
+      messages.add(MessageModel(
+          content: "Error: $e", isBot: true, timestamp: DateTime.now()));
+    }
+
     isBotTyping.value = false;
-    scrollToBottom();
+    scrollToBottom(); 
   }
 
   void scrollToBottom() {
